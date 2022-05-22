@@ -19,7 +19,6 @@ flowchart LR
     G(next frame log 'strike' in two_rounds_ago)
     H(Calculate score for spare in previous round)
     I((Is it a Spare?))
-    J(Log the score in pins_down)
     K(Log 'spare' in previous_round for next frame)
     L(Does this frame have a strike in previous_round_roll_2?)
     P(Not a spare)
@@ -49,7 +48,7 @@ flowchart LR
             S --> EA
         end
         subgraph NOT_A_STRIKE
-            T --> J
+            T 
         end
     end
     subgraph ROLL_2
@@ -62,6 +61,10 @@ flowchart LR
         subgraph NOT_A_SPARE
             P
         end
+    end
+
+     subgraph LOG_SCORE
+        Log_score
     end
     
     subgraph TRACKING
@@ -81,6 +84,7 @@ flowchart LR
     subgraph NEXT_FRAME
         DA
     end
+   
     
     START --> ROLL_1
     NOT_A_STRIKE --> V
@@ -90,9 +94,10 @@ flowchart LR
     NOT_A_SPARE --> NEXT_FRAME
     EA -->|Yes|ROUND_10
     EA -->|No|NEXT_FRAME
+    NOT_A_STRIKE --> LOG_SCORE
     
     
-    P --> J
+    NOT_A_SPARE --> LOG_SCORE
     K --> L
     L -->|Yes|X
     P --> L
