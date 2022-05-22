@@ -11,7 +11,7 @@ Planning
 ```mermaid
 
 flowchart TD
-    A(START HERE Frame Number n)
+    A(Frame Number n)
     C{Is it a strike?}
     D(Log 'strike' in previous_round for next frame)
     E(Did previous rounds have a strike or spare?)
@@ -38,14 +38,36 @@ flowchart TD
     AA(Round 10 Roll 3)
     BA(Calculate Final Score)
     CA(How many pins?)
+    DA(Next Frame)
 
-    subgraph STRIKE
-        S --> D
+    subgraph START
+        direction TB
+        A --> M
     end
-    subgraph NOT A STRIKE
+    subgraph ROLL_1
+        C -->|Yes| S
+        C -->|No| T
+        subgraph STRIKE
+            S --> D
+        end
+        subgraph NOT A STRIKE
+            T --> J
+        end
+    end
+    subgraph ROLL_2
         T --> N
-        T --> J
+        N --> I
+        I -->|Yes|R
+        R --> K
+        subgraph SPARE
+            R --> Q
+            R --> Y
+        end
+        subgraph NOT A SPARE
+            I --> P
+        end
     end
+    
     subgraph TRACKING
         S --> E
         E -->|previous_round| F
@@ -56,37 +78,31 @@ flowchart TD
         V -->|Spare|H
         V -->|Strike|W
     end
-    subgraph START
-        A --> M
+    subgraph ROUND_10
+        Y -->|Yes_Roll_3| AA
+        Y -->|Yes_Roll_2| Z
+        Z --> C
+        Y -->|No| Q
+        AA --> CA
+        CA --> BA
+    end
+    subgraph NEXT_FRAME
+        Q --> DA
     end
     
-    N --> I
+    
+    
     M --> C
-    C -->|Yes| S
+    
     S --> Y
-    Y -->|Yes_Roll_3| AA
-    Y -->|Yes_Roll_2| Z
-    Z --> C
-    Y -->|No| Q
     
     
     
-    C -->|No| T
-    I -->|No| P
     P --> J
     P --> Q
-    I -->|Yes|R
-    R --> K
     K --> L
     L -->|Yes|X
-    R --> Q
     
-    
-    
-    AA --> CA
-    CA --> BA
-    R --> Y
     P --> L
-
 
 ```
