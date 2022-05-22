@@ -10,8 +10,8 @@ Planning
 
 ```mermaid
 
-flowchart TD
-    A(Frame Number n)
+flowchart LR
+    
     C{Is it a strike?}
     D(Log 'strike' in previous_round for next frame)
     E(Did previous rounds have a strike or spare?)
@@ -22,10 +22,7 @@ flowchart TD
     J(Log the score in pins_down)
     K(Log 'spare' in previous_round for next frame)
     L(Does this frame have a strike in previous_round_roll_2?)
-    M(Roll 1)
-    N(Roll 2)
     P(Not a spare)
-    Q(Next Frame)
     R(Yes a spare)
     S(Yes a strike)
     T(Not a strike)
@@ -39,70 +36,65 @@ flowchart TD
     BA(Calculate Final Score)
     CA(How many pins?)
     DA(Next Frame)
+    EA(Is it round 10?)
 
     subgraph START
-        direction TB
-        A --> M
+        A(Frame Number n)
     end
     subgraph ROLL_1
         C -->|Yes| S
         C -->|No| T
         subgraph STRIKE
             S --> D
+            S --> EA
         end
-        subgraph NOT A STRIKE
+        subgraph NOT_A_STRIKE
             T --> J
         end
     end
     subgraph ROLL_2
-        T --> N
-        N --> I
         I -->|Yes|R
+        I --> P
         R --> K
         subgraph SPARE
-            R --> Q
             R --> Y
         end
-        subgraph NOT A SPARE
-            I --> P
+        subgraph NOT_A_SPARE
+            P
         end
     end
     
     subgraph TRACKING
-        S --> E
+        STRIKE --> E
         E -->|previous_round| F
         E -->|two_rounds_ago| U
         F -->|Strike| G
         F -->|Spare| H
-        J --> V
         V -->|Spare|H
         V -->|Strike|W
     end
     subgraph ROUND_10
-        Y -->|Yes_Roll_3| AA
-        Y -->|Yes_Roll_2| Z
-        Z --> C
-        Y -->|No| Q
+    Z
         AA --> CA
         CA --> BA
     end
     subgraph NEXT_FRAME
-        Q --> DA
+        DA
     end
     
-    
-    
-    M --> C
-    
-    S --> Y
-    
+    START --> ROLL_1
+    NOT_A_STRIKE --> V
+    NOT_A_STRIKE --> ROLL_2
+    Y -->|Yes|ROUND_10
+    Y -->|No| NEXT_FRAME
+    NOT_A_SPARE --> NEXT_FRAME
+    EA -->|Yes|ROUND_10
+    EA -->|No|NEXT_FRAME
     
     
     P --> J
-    P --> Q
     K --> L
     L -->|Yes|X
-    
     P --> L
 
 ```
