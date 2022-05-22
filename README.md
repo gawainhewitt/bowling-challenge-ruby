@@ -38,7 +38,28 @@ flowchart TD
     AA(Round 10 Roll 3)
     BA(Calculate Final Score)
     CA(How many pins?)
-    A --> M
+
+    subgraph STRIKE
+        S --> D
+    end
+    subgraph NOT A STRIKE
+        T --> N
+        T --> J
+    end
+    subgraph TRACKING
+        S --> E
+        E -->|previous_round| F
+        E -->|two_rounds_ago| U
+        F -->|Strike| G
+        F -->|Spare| H
+        J --> V
+        V -->|Spare|H
+        V -->|Strike|W
+    end
+    subgraph START
+        A --> M
+    end
+    
     N --> I
     M --> C
     C -->|Yes| S
@@ -47,14 +68,10 @@ flowchart TD
     Y -->|Yes_Roll_2| Z
     Z --> C
     Y -->|No| Q
-    S --> D
-    S --> E
-    E -->|previous_round| F
-    E -->|two_rounds_ago| U
-    F -->|Strike| G
-    F -->|Spare| H
+    
+    
+    
     C -->|No| T
-    T --> J
     I -->|No| P
     P --> J
     P --> Q
@@ -63,14 +80,13 @@ flowchart TD
     K --> L
     L -->|Yes|X
     R --> Q
-    T --> N
-    J --> V
-    V -->|Spare|H
-    V -->|Strike|W
+    
+    
+    
     AA --> CA
     CA --> BA
     R --> Y
     P --> L
-    
+
 
 ```
